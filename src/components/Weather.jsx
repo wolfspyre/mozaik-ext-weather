@@ -3,7 +3,10 @@ import reactMixin                      from 'react-mixin';
 import { ListenerMixin }               from 'reflux';
 import Mozaik                          from 'mozaik/browser';
 import WeatherForecastItem             from './WeatherForecastItem.jsx';
-import { icon as iconHelper }          from './WeatherCodeHelper';
+import {
+  icon as iconHelper,
+  tempType
+} from './WeatherCodeHelper';
 
 
 // see http://openweathermap.org/weather-conditions for `weather.id` meaning
@@ -19,16 +22,17 @@ class Weather extends Component {
     }
 
     getApiRequest() {
-        const { city, country, lang, limit } = this.props;
+        const { city, country, lang, limit, units } = this.props;
         const params = {
             city,
             country,
             lang,
-            limit
+            limit,
+            units
         };
 
         return {
-            id:     `weather.combined.${city}.${country}.${lang}.${limit}`,
+            id:     `weather.combined.${city}.${country}.${lang}.${limit}.${units}`,
             params: params
         };
     }
@@ -36,11 +40,9 @@ class Weather extends Component {
     onApiData(weather) {
         this.setState(weather);
     }
-
     render() {
-        const { city, country }     = this.props;
+        const { city, country, units }     = this.props;
         const { current, forecast } = this.state;
-
         let descriptionNode = null;
         let tempNode        = null;
         let iconNode        = null;
@@ -57,14 +59,14 @@ class Weather extends Component {
 
             tempNode = (
                 <span className="weather__weather__temp">
-                    <span className="weather__weather__temp__value">{Math.round(current.main.temp - 273.15)}</span>
-                    <span className="weather__weather__temp__unit">°C</span>
+                    <span className="weather__weather__temp__value">{Math.round(current.main.temp)}</span>
+                    <span className="weather__weather__temp__unit">°{tempType(units)}</span>
                 </span>
             );
         }
 
         const forecastItemNodes = forecast.map((data, i) => (
-            <WeatherForecastItem key={i} {...data} />
+            <WeatherForecastItem key={i} {...data} units={units} />
         ));
 
         return (
@@ -94,6 +96,11 @@ Weather.propTypes = {
     city:    PropTypes.string.isRequired,
     country: PropTypes.string.isRequired,
     limit:   PropTypes.number.isRequired,
+    units:   PropTypes.oneOf([
+        'imperial',
+        'metric',
+        'standard'
+    ]),
     lang:    PropTypes.oneOf([
         'en',          // English
         'ru',          // Russian
@@ -119,7 +126,8 @@ Weather.propTypes = {
 
 Weather.defaultProps = {
     lang:  'en',
-    limit: 3
+    limit: 3,
+    units: 'metric'
 };
 
 reactMixin(Weather.prototype, ListenerMixin);

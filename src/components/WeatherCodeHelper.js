@@ -36,3 +36,17 @@ export function icon(code) {
 
     return codes[code];
 }
+
+export function tempType(units){
+  switch(units.toLowerCase()){
+    case 'metric':
+      return 'C';
+    break;
+    case 'standard':
+      return 'K';
+    break;
+    case 'imperial':
+      return 'F';
+    break;
+  }
+}
