@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
-import { icon as iconHelper }          from './WeatherCodeHelper';
+import { icon as iconHelper, tempType }          from './WeatherCodeHelper';
 
 
 class WeatherForecastItem extends Component {
     render() {
-        const { weather, temp } = this.props;
-
+        const { weather, temp, units } = this.props;
         const icon      = iconHelper(weather[0].id);
         const iconClass = `weather__icon weather__icon--${icon}`;
 
@@ -19,11 +18,11 @@ class WeatherForecastItem extends Component {
                 <span className="weather__weather__forecast__item__min-max">
                     <span className="weather__weather__forecast__item__min">
                         min.<br />
-                        {Math.round(temp.min - 273.15)}°C
+                        {Math.round(temp.min)}°{tempType(units)}
                     </span>
                     <span className="weather__weather__forecast__item__max">
                         max.<br />
-                        {Math.round(temp.max - 273.15)}°C
+                        {Math.round(temp.max)}°{tempType(units)}
                     </span>
                 </span>
             </div>

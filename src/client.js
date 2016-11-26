@@ -18,8 +18,9 @@ const client = mozaik => {
 
     const methods = {
         current(params) {
-            const { city, country, lang } = params;
-            const cacheKey = `weather.current.${city}.${country}.${lang}`;
+            const { city, country, lang, units } = params;
+            console.log(params);
+            const cacheKey = `weather.current.${city}.${country}.${lang}.${units}`;
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
@@ -27,7 +28,7 @@ const client = mozaik => {
                 });
             }
 
-            return request.get(`${API_BASE_URL}/weather?lang=${lang}&q=${city},${country}&appid=${token}`)
+            return request.get(`${API_BASE_URL}/weather?lang=${lang}&q=${city},${country}&units=${units}&appid=${token}`)
                 .promise()
                 .then((res) => {
                     cache.put(cacheKey, res.body, 1800000);
@@ -38,8 +39,8 @@ const client = mozaik => {
         },
 
         forecast(params) {
-            const { city, country, lang, limit } = params;
-            const cacheKey = `weather.forecast.${city}.${country}.${lang}.${limit}`;
+            const { city, country, lang, limit, units } = params;
+            const cacheKey = `weather.forecast.${city}.${country}.${lang}.${limit}.${units}`;
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
@@ -47,7 +48,7 @@ const client = mozaik => {
                 });
             }
 
-            return request.get(`${API_BASE_URL}/forecast/daily?mode=json&cnt=${limit}&lang=${lang}&q=${city},${country}&appid=${token}`)
+            return request.get(`${API_BASE_URL}/forecast/daily?mode=json&cnt=${limit}&lang=${lang}&q=${city},${country}&units=${units}&appid=${token}`)
                 .promise()
                 .then((res) => {
                     cache.put(cacheKey, res.body.list, 1800000);
@@ -58,8 +59,8 @@ const client = mozaik => {
         },
 
         combined(params) {
-            const { city, country, lang, limit } = params;
-            const cacheKey = `weather.combined.${city}.${country}.${lang}.${limit}`;
+            const { city, country, lang, limit, units } = params;
+            const cacheKey = `weather.combined.${city}.${country}.${lang}.${limit}.${units}`;
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
