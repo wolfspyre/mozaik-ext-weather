@@ -48,6 +48,11 @@ key       | required | description
 `country` | yes      | *The country you want to display weather for.*
 `lang`    | no       | *Lang used to display weather info. Defaults to `en`.*
 `limit`   | no       | *Limit displayed days. Defaults to `3`.*
+`units`   | no       | *The format you wish the results to be returned in*
+`id`      | no       | *The Openweathermap city ID. More specific than city/country*
+`lat`     | no        | *The Lattitude being requested. More specific than id*
+`lon`     | no        | *The Longitude being requested. More specific than id*
+
 
 ### usage
 

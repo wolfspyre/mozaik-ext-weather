@@ -22,17 +22,20 @@ class Weather extends Component {
     }
 
     getApiRequest() {
-        const { city, country, lang, limit, units } = this.props;
+        const { city, country, lang, limit, units, cid, lat, lon } = this.props;
         const params = {
             city,
             country,
             lang,
             limit,
-            units
+            units,
+            cid,
+            lat,
+            lon
         };
 
         return {
-            id:     `weather.combined.${city}.${country}.${lang}.${limit}.${units}`,
+            id:     `weather.combined.${city}.${country}.${lang}.${limit}.${units}.${cid}.${lat}.${lon}`,
             params: params
         };
     }
@@ -41,7 +44,7 @@ class Weather extends Component {
         this.setState(weather);
     }
     render() {
-        const { city, country, units }     = this.props;
+        const { city, country, units, cid, lat, lon }     = this.props;
         const { current, forecast } = this.state;
         let descriptionNode = null;
         let tempNode        = null;
@@ -121,13 +124,19 @@ Weather.propTypes = {
         'tr',          // Turkish
         'hr',          // Croatian
         'ca'           // Catalan
-    ]).isRequired
+    ]).isRequired,
+    cid:    PropTypes.number.isNotRequired,
+    lat:    PropTypes.string.isNotRequired,
+    lon:    PropTypes.string.isNotRequired,
 };
 
 Weather.defaultProps = {
     lang:  'en',
     limit: 3,
-    units: 'metric'
+    units: 'metric',
+    cid: 0,
+    lat: null,
+    lon: null
 };
 
 reactMixin(Weather.prototype, ListenerMixin);

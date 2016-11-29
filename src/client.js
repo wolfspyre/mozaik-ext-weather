@@ -18,9 +18,10 @@ const client = mozaik => {
 
     const methods = {
         current(params) {
-            const { city, country, lang, units } = params;
+            const { city, country, lang, units, cid, lat, lon} = params;
             console.log(params);
-            const cacheKey = `weather.current.${city}.${country}.${lang}.${units}`;
+            const cacheKey = `weather.current.${city}.${country}.${lang}.${units}.${cid}.${lat}.${lon}`;
+            mozaik.logger.info(`[weather] fetching for city:${city} country:${country} lang:${lang} units:${units} id:${cid} lat:${lat} lon:${lon}`);
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
@@ -39,8 +40,9 @@ const client = mozaik => {
         },
 
         forecast(params) {
-            const { city, country, lang, limit, units } = params;
-            const cacheKey = `weather.forecast.${city}.${country}.${lang}.${limit}.${units}`;
+            const { city, country, lang, limit, units, cid, lat, lon } = params;
+            const cacheKey = `weather.forecast.${city}.${country}.${lang}.${limit}.${units}.${cid}.${lat}.${lon}`;
+            mozaik.logger.info(`[weather] fetching for city:${city} country:${country} lang:${lang} units:${units} id:${cid} lat:${lat} lon:${lon}`);
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
@@ -59,8 +61,9 @@ const client = mozaik => {
         },
 
         combined(params) {
-            const { city, country, lang, limit, units } = params;
-            const cacheKey = `weather.combined.${city}.${country}.${lang}.${limit}.${units}`;
+            const { city, country, lang, limit, units, cid, lat, lon } = params;
+            const cacheKey = `weather.combined.${city}.${country}.${lang}.${limit}.${units}.${cid}.${lat}.${lon}`;
+            mozaik.logger.info(`[weather] fetching for city:${city} country:${country} lang:${lang} units:${units} id:${cid} lat:${lat} lon:${lon}`);
 
             if (cache.get(cacheKey) !== null) {
                 return new Promise((resolve) => {
